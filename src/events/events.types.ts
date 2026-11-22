@@ -1,8 +1,10 @@
 export const EventStatuses = ['Upcoming', 'Past', 'Ongoing', 'Canceled'] as const;
 export const SessionModes = ['Online', 'Offline', 'Canceled'] as const;
+export const ROLES = ['Student', 'Teacher', 'Organizer', 'staff'] as const;
 
 export type EventStatus = (typeof EventStatuses)[number];
 export type SessionMode = (typeof SessionModes)[number];
+export type Role = (typeof ROLES)[number];
 
 export type Event = {
   readonly id: number;
@@ -35,3 +37,11 @@ export type FindEventsQuery = {
   page?: number;
   limit?: number;
 };
+
+export interface User {
+  readonly id: number;
+  email: string;
+  passwordHash: string;
+  roles: Role[]; // the source of truth
+  eventId?: number; // for the event role
+}

@@ -1,4 +1,4 @@
-import { LoggerMiddleware } from './logger.middleware';
+import { LoggerMiddleware } from './logger.middleware.js';
 
 describe('LoggerMiddleware', () => {
   it('should be defined', () => {

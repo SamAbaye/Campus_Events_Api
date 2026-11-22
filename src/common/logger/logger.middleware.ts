@@ -8,8 +8,7 @@ export class LoggerMiddleware implements NestMiddleware {
     res: Response, 
     next: NextFunction,
   ) 
-    {
-      
+    {  
     next();
   }
 }
