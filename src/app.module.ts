@@ -4,6 +4,7 @@ import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
 import { EventsModule } from './events/events.module.js';
 import { LoggerMiddleware } from './common/logger/logger.middleware.js';
+import { PinoLoggerService } from './common/logger/pino-logger.service.js';
 
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
@@ -17,7 +18,7 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
     EventsModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, PinoLoggerService],
 })
 
 export class AppModule implements NestModule {
