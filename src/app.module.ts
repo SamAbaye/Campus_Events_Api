@@ -5,7 +5,11 @@ import { AppService } from './app.service.js';
 import { EventsModule } from './events/events.module.js';
 import { LoggerMiddleware } from './common/logger/logger.middleware.js';
 import { PinoLoggerService } from './common/logger/pino-logger.service.js';
-
+import { UsersModule } from './users/users.module.js';
+import { AuthModule } from './auth/auth.module.js';
+import { ConfigModule } from '@nestjs/config';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtAuthGuard } from './auth/strategies/guards/jwt-auth.guard.js';
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
 @Module({
@@ -15,12 +19,23 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
       appSecret: process.env.OBSERVE_APP_SECRET ?? 'YOUR_APP_SECRET',
       serviceId: 'campus-events-api',
     }),
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     EventsModule,
+    UsersModule,
+    AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService, PinoLoggerService],
+  providers: [
+    AppService,
+    PinoLoggerService,
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+  ],
 })
-
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(LoggerMiddleware).forRoutes('*');

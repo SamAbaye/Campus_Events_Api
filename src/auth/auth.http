@@ -1,0 +1,45 @@
+### Register a new customer
+POST http://localhost:3000/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "almaz@example.et",
+  "password": "Password123!"
+}
+
+### Try the same email again — expect 409
+POST http://localhost:3000/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "almaz@example.et",
+  "password": "Password123!"
+}
+
+### Invalid email — expect 400
+POST http://localhost:3000/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "not-an-email",
+  "password": "Password123!"
+}
+
+### Short password — expect 400
+POST http://localhost:3000/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "new@example.et",
+  "password": "123"
+}
+
+### Extra role field — expect 400
+POST http://localhost:3000/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "new@example.et",
+  "password": "Password123!",
+  "roles": ["admin"]
+}

@@ -1,3 +1,4 @@
+import { SwaggerModule, DocumentBuilder} from '@nestjs/swagger';
 import { NestFactory } from '@nestjs/core';
 import { AppModule, ObserveInstrument } from './app.module.js';
 import { ValidationPipe } from '@nestjs/common';
@@ -9,6 +10,16 @@ async function bootstrap() {
   });
   app.useLogger(app.get(PinoLoggerService));
   app.setGlobalPrefix('api');
+  const config = new DocumentBuilder()
+    .setTitle('Addis Eats API')
+    .setDescription('Authentication and protected routes')
+    .setVersion('1.0')
+    .addBearerAuth()
+    .build();
+
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
+
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -20,7 +31,8 @@ async function bootstrap() {
       stopAtFirstError: false,
       disableErrorMessages: false,
     }),
+    
   );
-  await app.listen(process.env.PORT ?? 3000);
+  await app.listen(process.env.PORT ?? 4000);
 }
 await bootstrap();
